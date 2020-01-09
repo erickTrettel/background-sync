@@ -7,8 +7,8 @@
 1. Abra a aplicação e aguarde o carregamento.
 2. Fique offline (desligue a internet, ou fique offline pelo Chrome DevTools).
 3. Clique no botão `Fire event`
-3.1. Ao clicar no botão, sua requisição será armazenada no navegador. Para visualizá-la, entre no DevTools e siga o caminho: `Application > IndexedDB > workbox-background-sync > requests > queueName`
-4. Fique online novamente
+4. Ao clicar no botão, sua requisição será armazenada no navegador. Para visualizá-la, entre no DevTools e siga o caminho: `Application > IndexedDB > workbox-background-sync > requests > queueName`
+5. Fique online novamente
 
 ## Service Worker Workbox
 
