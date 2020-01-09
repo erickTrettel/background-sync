@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Background Sync Test</title>
+  </head>
+  <body>
+    <h1>Background Sync Test</h1>
+
+    <button id="btn_event">Fire event</button>
+
+    <hr />
+
+    <ul id="users"></ul>
+
+    <script>
+      if ("serviceWorker" in navigator) {
+        navigator.serviceWorker
+          .register("/sw.js")
+          .then(reg => reg.sync.getTags())
+          .then(tags => console.log(tags))
+          .catch(err =>
+            console.log("Failed to register service worker: ", err)
+          );
+      }
+
+      function sendNotification() {
+        return new Promise((resolve, reject) => {
+          Notification.requestPermission(result => {
+            if (result !== "granted") {
+              reject(Error("Denied notification permission"));
+            }
+
+            resolve();
+          })
+            .then(() => {
+              return navigator.serviceWorker.ready;
+            })
+            .catch(err => {
+              console.log("Something has broken: ", err);
+            });
+        });
+      }
+
+      function getUsers() {
+        const req = new XMLHttpRequest();
+        req.open("GET", "http://jsonplaceholder.typicode.com/users", true);
+        req.send();
+
+        req.onload = function() {
+          const response = JSON.parse(req.response);
+
+          response.forEach(user => {
+            const item = document.createElement("li");
+            const name = document.createTextNode(user.name);
+
+            item.appendChild(name);
+
+            document.querySelector("#users").appendChild(item);
+          });
+        };
+      }
+
+      // btn event
+      document.querySelector("#btn_event").addEventListener("click", e => {
+        e.preventDefault();
+
+        getUsers();
+      });
+    </script>
+  </body>
+</html>
